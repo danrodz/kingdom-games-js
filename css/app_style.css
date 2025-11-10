@@ -1,335 +1,654 @@
-h5.white-text,
-h3.white-text {
-  text-shadow: 2px 4px 6px black;
+/* ========================================
+   CSS Variables & Base Styles
+   ======================================== */
+:root {
+  --primary-color: #667eea;
+  --primary-dark: #5568d3;
+  --secondary-color: #764ba2;
+  --accent-color: #f093fb;
+  --danger-color: #ff5252;
+  --warning-color: #ffa726;
+  --success-color: #66bb6a;
+
+  --player1-color: #4fc3f7;
+  --player1-dark: #0288d1;
+  --player2-color: #ba68c8;
+  --player2-dark: #8e24aa;
+
+  --bg-color: #f5f7fa;
+  --card-bg: #ffffff;
+  --text-primary: #2c3e50;
+  --text-secondary: #7f8c8d;
+  --border-radius: 16px;
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.15);
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-footer {
-  margin-top: 62px;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-#gameContainer {
-  margin: auto;
-  padding-top: 30px;
+body {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: var(--text-primary);
+  overflow-x: hidden;
 }
 
-.icon-block {
-  padding: 0 15px;
+/* ========================================
+   Header Styles
+   ======================================== */
+.game-header {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem 2rem;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
-.icon-block .material-icons {
-  font-size: inherit;
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-/* XXS Devices, Small Phones */
-@media only screen and (max-width: 479px) {
-  /* player 1 card sizing and margin */
+.game-title {
+  font-size: 2rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.turn-indicator {
+  width: 100%;
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: linear-gradient(90deg, var(--player1-color), var(--player2-color));
+  border-radius: var(--border-radius);
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.9; transform: scale(0.98); }
+}
+
+/* ========================================
+   Button Styles
+   ======================================== */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  color: white;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--primary-dark), var(--secondary-color));
+}
+
+.btn-secondary {
+  background: var(--card-bg);
+  color: var(--text-primary);
+  border: 2px solid var(--primary-color);
+}
+
+.btn-secondary:hover {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ff5252, #f44336);
+  color: white;
+}
+
+.btn-danger:hover {
+  background: linear-gradient(135deg, #f44336, #d32f2f);
+}
+
+.btn-warning {
+  background: linear-gradient(135deg, #ffa726, #ff9800);
+  color: white;
+}
+
+.btn-warning:hover {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+}
+
+/* ========================================
+   Game Container & Layout
+   ======================================== */
+.game-container {
+  max-width: 1600px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  display: grid;
+  grid-template-columns: 280px 1fr 280px;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 1200px) {
+  .game-container {
+    grid-template-columns: 220px 1fr 220px;
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .game-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
   #floatLeft {
-    float: left;
-    height: 300px;
-    margin-top: 375px;
-    margin-left: 15px;
+    order: 1;
   }
 
-  /* player 2 card sizing and margin */
+  #gameBoard {
+    order: 2;
+  }
+
   #floatRight {
-    float: right;
-    height: 300px;
-    margin-top: -315px;
-    margin-right: 15px;
-  }
-
-  /* cards positioning */
-  #floatLeft,
-  #floatRight {
-    width: 145px;
-    margin-left: 7px;
-    margin-right: 7px;
-    clear: both;
-    display: inline-block;
-  }
-
-  /* title resizing */
-  body > div:nth-child(1) > nav > div > a {
-    font-size: 0.9rem;
-  }
-
-  /* nav bar resizing */
-  body > div:nth-child(1) > nav {
-    height: 100px;
-  }
-
-  /* resizing nav bar buttons */
-  #leftButton > li > a,
-  #leftButton > li > a > i,
-  #rightButton > li > a,
-  #rightButton > li > a > i {
-    font-size: 12px;
-    margin-left: 5px;
-    margin-right: 5px;
-  }
-
-  /* bringin dow to new space the buttons on navbar */
-  #leftButton > li > a,
-  #rightButton > li > a {
-    margin-top: 50px;
-  }
-
-  /* resizing card text */
-  #p2health,
-  #floatRight > div > h5:nth-child(2),
-  #floatRight > div > h5:nth-child(6),
-  #p2power,
-  #floatLeft > div > h5:nth-child(2),
-  #p1health,
-  #floatLeft > div > h5:nth-child(6),
-  #p1power {
-    font-size: 20px;
-  }
-
-  /* resizing card margin */
-  #floatLeft > div > h5:nth-child(2),
-  #floatRight > div > h5:nth-child(2),
-  #floatLeft > div > h5:nth-child(6),
-  #floatRight > div > h5:nth-child(6) {
-    margin-bottom: 0px;
-  }
-
-  /* resizing card margin to bring elements together */
-  #p1power,
-  #p1health,
-  #p1healthBar #p2power,
-  #p2health,
-  #p2healthBar,
-  #p2power {
-    margin-top: 0px;
-  }
-
-  /* bringing footer colored panel closer */
-  body > footer {
-    margin-top: 20px;
+    order: 3;
   }
 }
 
-@media only screen and (max-width: 479px) and (min-width: 420px) {
-  /* title resizing */
-  body > div:nth-child(1) > nav > div > a {
-    font-size: 1.2rem;
-  }
+/* ========================================
+   Player Cards
+   ======================================== */
+.player-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 1.5rem;
+  box-shadow: var(--shadow-lg);
+  transition: var(--transition);
+  position: relative;
+  overflow: hidden;
+}
 
-  /* cards positioning */
-  #floatLeft,
-  #floatRight {
-    width: 180px;
-    margin-left: 20px;
-    margin-right: 20px;
-    clear: both;
-    display: inline-block;
-  }
+.player-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: linear-gradient(90deg, var(--player1-color), var(--player1-dark));
+}
 
-  /* player 1 card sizing and margin */
-  #floatLeft {
-    float: left;
-    height: 300px;
-    margin-top: 385px;
-    margin-left: 15px;
+.player2-card::before {
+  background: linear-gradient(90deg, var(--player2-color), var(--player2-dark));
+}
+
+.player-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+}
+
+.player-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.player-avatar {
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.player-name {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.stat-group {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ebf0 100%);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-info label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* Health Bar */
+.health-bar {
+  width: 100%;
+  height: 12px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  margin: 0.5rem 0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.health-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #66bb6a, #4caf50);
+  border-radius: 6px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.health-fill[style*="width: 100%"] {
+  background: linear-gradient(90deg, #66bb6a, #4caf50);
+}
+
+.health-fill[style*="width: 5"],
+.health-fill[style*="width: 6"],
+.health-fill[style*="width: 7"] {
+  background: linear-gradient(90deg, #ffa726, #ff9800);
+  box-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+}
+
+.health-fill[style*="width: 1"],
+.health-fill[style*="width: 2"],
+.health-fill[style*="width: 3"],
+.health-fill[style*="width: 4"] {
+  background: linear-gradient(90deg, #ff5252, #f44336);
+  box-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+}
+
+/* ========================================
+   Game Board
+   ======================================== */
+#gameBoard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+#stage {
+  position: relative;
+  width: 640px;
+  height: 640px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+}
+
+.cell {
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  transition: var(--transition);
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.cell:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+  z-index: 10;
+}
+
+.cell.available {
+  animation: glow 1.5s ease-in-out infinite;
+  box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(102, 126, 234, 1);
   }
 }
 
-/* XS Devices, Phones */
-@media only screen and (max-width: 768px) and (min-width: 480px) {
-  /* player 1 card sizing and margin */
-  #floatLeft {
-    float: left;
-    height: 300px;
-    margin-top: 45px;
-    width: 100px;
-    margin-left: 0px;
-  }
+/* ========================================
+   Modal Styles
+   ======================================== */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease;
+}
 
-  #player1Heart > i,
-  #\23 leftContent > span.btn-large.btn-floating.black > i,
-  #\23 leftContent > span.btn-large.btn-floating.black > i ::before {
-    padding-right: 0px;
-  }
+.modal.active {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  #floatRight {
-    float: right;
-    height: 300px;
-    margin-top: 45px;
-    width: 100px;
-    margin-right: 0px;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-
-  #player2Heart > i,
-  #\23 rightContent > span.btn-large.btn-floating.black > i,
-  #\23 rightContent > span.btn-large.btn-floating.blackn > i ::before {
-    padding-right: 0px;
+  to {
+    opacity: 1;
   }
+}
 
-  /* resizing card text */
-  #p2health,
-  #floatRight > div > h5:nth-child(2),
-  #floatRight > div > h5:nth-child(6),
-  #p2power,
-  #floatLeft > div > h5:nth-child(2),
-  #p1health,
-  #floatLeft > div > h5:nth-child(6),
-  #p1power {
-    font-size: 15px;
+.modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: var(--border-radius);
+  padding: 2.5rem;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  animation: slideUp 0.3s ease;
+  z-index: 1001;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
   }
-
-  /* resizing card margin */
-  #floatLeft > div > h5:nth-child(2),
-  #floatRight > div > h5:nth-child(2),
-  #floatLeft > div > h5:nth-child(6),
-  #floatRight > div > h5:nth-child(6) {
-    margin-bottom: 0px;
+  to {
+    transform: translateY(0);
+    opacity: 1;
   }
+}
 
-  /* resizing card margin to bring elements together */
-  #p1power,
-  #p1health,
-  #p1healthBar #p2power,
-  #p2health,
-  #p2healthBar,
-  #p2power {
-    margin-top: 0px;
-  }
+.modal-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  text-align: center;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-  /* title resizing */
-  body > div:nth-child(1) > nav > div > a {
+.modal-text {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.modal-actions .btn {
+  flex: 1;
+  min-width: 150px;
+  justify-content: center;
+}
+
+/* Rules Modal Specific Styles */
+.rules-content {
+  max-width: 800px;
+}
+
+.rules-section h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 1.5rem 0 1rem;
+}
+
+.rules-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.rules-section li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  line-height: 1.6;
+}
+
+.rules-section li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--success-color);
+  font-weight: bold;
+}
+
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 1rem 0;
+}
+
+.item-info {
+  background: linear-gradient(135deg, #f5f7fa 0%, #e8ebf0 100%);
+  padding: 1rem;
+  border-radius: 12px;
+}
+
+.item-info strong {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.item-info ul {
+  margin-top: 0.5rem;
+}
+
+/* ========================================
+   Footer
+   ======================================== */
+.game-footer {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  text-align: center;
+  margin-top: 4rem;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.game-footer p {
+  margin: 0.5rem 0;
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+.footer-small {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  font-weight: 400 !important;
+}
+
+/* ========================================
+   Responsive Design
+   ======================================== */
+@media (max-width: 768px) {
+  .game-title {
     font-size: 1.5rem;
   }
 
-  /* nav bar resizing */
-  body > div:nth-child(1) > nav {
-    height: 100px;
+  .header-content {
+    flex-direction: column;
+    text-align: center;
   }
 
-  /* resizing nav bar buttons */
-  #leftButton > li > a,
-  #leftButton > li > a > i,
-  #rightButton > li > a,
-  #rightButton > li > a > i {
-    font-size: 12px;
-    margin-left: 5px;
-    margin-right: 5px;
+  .header-buttons {
+    width: 100%;
+    justify-content: center;
   }
 
-  /* bringin dow to new space the buttons on navbar */
-  #leftButton > li > a,
-  #rightButton > li > a {
-    margin-top: 50px;
+  #stage {
+    width: 480px;
+    height: 480px;
+  }
+
+  .cell {
+    width: 48px;
+    height: 48px;
+  }
+
+  .player-card {
+    margin: 0 auto;
+    max-width: 400px;
+  }
+
+  .modal-content {
+    padding: 1.5rem;
+  }
+
+  .modal-title {
+    font-size: 1.5rem;
   }
 }
 
-@media only screen and (max-width: 768px) and (min-width: 650px) {
-  /* player 1 card sizing and margin */
-  #floatLeft {
-    float: left;
-    height: 300px;
-    margin-top: 45px;
-    width: 120px;
-    margin-left: 20px;
+@media (max-width: 480px) {
+  .game-title {
+    font-size: 1.2rem;
   }
 
-  #floatRight {
-    float: right;
-    height: 300px;
-    margin-top: 45px;
-    width: 120px;
-    margin-right: 20px;
+  #stage {
+    width: 320px;
+    height: 320px;
+  }
+
+  .cell {
+    width: 32px;
+    height: 32px;
+  }
+
+  .btn {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+  }
+
+  .items-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-@media only screen and (max-width: 992px) and (min-width: 768px) {
-  #floatLeft {
-    float: left;
-    height: 400px;
-    margin-top: 45px;
-    width: 120px;
-    margin-left: 10px;
-  }
-
-  #floatRight {
-    float: right;
-    height: 400px;
-    margin-top: 45px;
-    width: 120px;
-    margin-right: 10px;
+/* ========================================
+   Accessibility & Print
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
-/* Medium Devices, Small Computers, Large Tablets */
-@media only screen and (min-width: 992px) {
-  #floatLeft {
-    float: left;
-    width: 150px;
-    height: 420px;
-    margin-top: 130px;
-    margin-left: 10px;
-  }
-
-  #floatRight {
-    float: right;
-    width: 150px;
-    height: 420px;
-    margin-top: 130px;
-    margin-right: 10px;
-  }
+:focus-visible {
+  outline: 3px solid var(--primary-color);
+  outline-offset: 2px;
 }
 
-/* Large Devices, Wide Screens */
-@media only screen and (min-width: 1200px) {
-  #floatLeft {
-    float: left;
-    width: 200px;
-    height: 420px;
-    margin-top: 130px;
-    margin-left: 30px;
-  }
-
-  #floatRight {
-    float: right;
-    width: 200px;
-    height: 420px;
-    margin-top: 130px;
-    margin-right: 30px;
-  }
-}
-
-@media only screen and (min-width: 1400px) {
-  #floatLeft {
-    float: left;
-    width: 250px;
-    height: 420px;
-    margin-top: 130px;
-    margin-left: 100px;
-  }
-
-  #floatRight {
-    float: right;
-    width: 250px;
-    height: 420px;
-    margin-top: 130px;
-    margin-right: 100px;
-  }
-}
-
-@media only screen and (min-width: 1600px) {
-  #floatLeft {
-    float: left;
-    width: 300px;
-    height: 420px;
-    margin-top: 130px;
-    margin-left: 200px;
-  }
-
-  #floatRight {
-    float: right;
-    width: 300px;
-    height: 420px;
-    margin-top: 130px;
-    margin-right: 200px;
-  }
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
