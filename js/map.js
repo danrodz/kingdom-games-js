@@ -226,42 +226,55 @@ function render() {
   }
 
   availableTiles();
+  updateTurnIndicator();
 
   if (player1Health < 1 || player2Health < 1) {
+    let winner = '';
     if (player1Health < 1) {
-      // document.getElementById('player1Heart').classList.add('disabled');
-      // document.getElementById('player1Heart').classList.remove('pulse');
-      $('#player1Heart')
-        .removeClass('pulse')
-        .addClass('disabled');
       player1Health = 0;
-      $('#p1healthBar').css('width', '0%');
-      $('#p1health').text('0%');
+      document.getElementById('p1healthBar').style.width = '0%';
+      document.getElementById('p1health').textContent = '0';
+      winner = 'Player 2';
     }
     if (player2Health < 1) {
-      // document.getElementById('player2Heart').classList.add('disabled');
-      // document.getElementById('player2Heart').classList.remove('pulse');
-      $('#player2Heart')
-        .removeClass('pulse')
-        .addClass('disabled');
       player2Health = 0;
-      $('#p2healthBar').css('width', '0%');
-      $('#p2health').text('0%');
+      document.getElementById('p2healthBar').style.width = '0%';
+      document.getElementById('p2health').textContent = '0';
+      winner = 'Player 1';
     }
-    $('#lostGame').modal('open');
-  } else {
-    // document.querySelector('#p1power').textContent = player1Power[0] + '%';
-    // document.querySelector('#p2power').textContent = player2Power[0] + '%';
-    // document.querySelector('#p1health').textContent = '' + player1Health + '%';
-    // document.querySelector('#p2health').textContent = '' + player2Health + '%';
-    // document.querySelector('#p1healthBar').style.width = '' + player1Health + '%';
-    // document.querySelector('#p2healthBar').style.width = '' + player2Health + '%';
 
-    $('#p1power').text('' + player1Power[0] + '%');
-    $('#p2power').text('' + player2Power[0] + '%');
-    $('#p1health').text('' + player1Health + '%');
-    $('#p2health').text('' + player2Health + '%');
-    $('#p1healthBar').css('width', '' + player1Health + '%');
-    $('#p2healthBar').css('width', '' + player2Health + '%');
+    // Show game over modal
+    const gameOverText = document.getElementById('gameOverText');
+    if (gameOverText) {
+      gameOverText.textContent = `🎉 ${winner} wins! Would you like to play again?`;
+    }
+
+    if (window.modalManager) {
+      window.modalManager.openModal('lostGame');
+    }
+  } else {
+    // Update UI
+    document.getElementById('p1power').textContent = player1Power[0];
+    document.getElementById('p2power').textContent = player2Power[0];
+    document.getElementById('p1health').textContent = player1Health;
+    document.getElementById('p2health').textContent = player2Health;
+    document.getElementById('p1healthBar').style.width = player1Health + '%';
+    document.getElementById('p2healthBar').style.width = player2Health + '%';
+  }
+}
+
+// Update turn indicator
+function updateTurnIndicator() {
+  const turnText = document.getElementById('turnText');
+  const turnIndicator = document.getElementById('turnIndicator');
+
+  if (turnText && turnIndicator) {
+    if (turn.control) {
+      turnText.textContent = "👑 Player 1's Turn";
+      turnIndicator.style.background = 'linear-gradient(90deg, #4fc3f7, #0288d1)';
+    } else {
+      turnText.textContent = "🏰 Player 2's Turn";
+      turnIndicator.style.background = 'linear-gradient(90deg, #ba68c8, #8e24aa)';
+    }
   }
 }

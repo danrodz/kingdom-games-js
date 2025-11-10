@@ -149,7 +149,9 @@ function renderObjects() {
     (player1Row === player2Row && player1Column === player2Column + 1)
   ) {
     if (turn.fight === turn.control) {
-      $('#fight').modal('open');
+      if (window.modalManager) {
+        window.modalManager.openModal('fight');
+      }
     } else {
       render();
     }

@@ -3,257 +3,179 @@
 <html lang="en">
 
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Kingdom Games</title>
   <!-- CSS  -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/tile_animation.css">
   <link rel="stylesheet" href="css/map_control.css">
   <link rel="stylesheet" href="css/app_style.css">
-  <title>The Kingdom Games</title>
-
 </head>
 
-<body class="grey lighten-2">
-  <!-- Navigation Bar -->
-  <div>
-    <nav class="nav-wrapper grey darken-3">
-      <div class="container">
-        <a class="brand-logo center">The Kingdom Games
-          <i class="material-icons hide-on-small-only">security</i>
-        </a>
-        <ul class="left" id="leftButton">
-          <li>
-            <a data-target="rules" class="modal-trigger waves-effect waves-light btn light-blue darken-3  hoverable">Rules
-              <i class="material-icons right">help_outline</i>
-            </a>
-          </li>
-        </ul>
-        <ul class="right" id="rightButton">
-          <li>
-            <a href="index.html" class="waves-effect waves-light btn teal accent-4 hoverable">Restart
-              <i class="material-icons right">loop</i>
-            </a>
-          </li>
-        </ul>
-      </div>
-    </nav>
-  </div>
-
-  <!-- Fight Prompt -->
-  <div id="fight" class="modal grey">
-    <div class="modal-content grey lighten-3">
-      <h2 class="center-align flow-text cyan-text accent-4">YOU HAVE BEEN CHALLENGED!</h2>
-      <p class="center-align flow-text">If you defend yourself, your shield will grant you a 50% damage in-take reduction -but you can't counter-attack.
-        <br/>Are you going to defend yourself or attack?</p>
-    </div>
-    <div class="modal-footer">
-      <div class="row">
-        <a id="defense" href="#!" class="modal-action modal-close btn amber darken-1 col s6 white-text hoverable" onClick="(function(){
-          turn.defend = true;
-          fight();
-          return false;
-      })();return false;">Defend</a>
-        <a id="attack" href="#!" class="btn modal-action modal-close red col s6 white-text pulse hoverable" onClick="(function(){
-          turn.defend = false;
-          fight();
-          return false;
-      })();return false;">Attack</a>
+<body>
+  <!-- Header -->
+  <header class="game-header">
+    <div class="header-content">
+      <h1 class="game-title">⚔️ The Kingdom Games</h1>
+      <div class="header-buttons">
+        <button id="rulesBtn" class="btn btn-secondary">📖 Rules</button>
+        <button id="restartBtn" class="btn btn-primary">🔄 Restart</button>
       </div>
     </div>
-  </div>
-
-  <!-- End Game Prompt -->
-  <div id="lostGame" class="modal grey">
-    <div class="modal-content grey lighten-3">
-      <h2 class="center-align flow-text red-text">YOU HAVE BEEN DEFEATED!</h2>
-      <p class="center-align flow-text">You couldn't defend yourself, you lost the kingdom. Or wait!
-        <br/>Do you want to redeem yourself and request to rematch your opponent?</p>
+    <div id="turnIndicator" class="turn-indicator">
+      <span id="turnText">Player 1's Turn</span>
     </div>
-    <div class="modal-footer">
-      <div class="row">
-        <a href="index.html" class="modal-action modal-close btn amber darken-1 col s6 white-text hoverable">Rematch</a>
-        <a href="#!" class="btn modal-action modal-close red col s6 white-text pulse hoverable">Quit</a>
-      </div>
-    </div>
-  </div>
+  </header>
 
-  <!-- Player 1 Game Card  -->
-  <div class="card cyan accent-1 z-depth-5" id="floatLeft">
-    <div class="card-content center" id="#leftContent">
-      <span id="player1Heart" class="pulse btn-large btn-floating red">
-        <i class="material-icons large white-text">favorite</i>
-      </span>
-      <h5 class="white-text">Health</h5>
-      <h3 id="p1health" class="count white-text">100%</h3>
-      <div class="progress grey lighten-1">
-        <div id="p1healthBar" class="determinate red" style="width: 100%;">
-        </div>
-      </div>
-      <span class="btn-large btn-floating black">
-        <i class="material-icons large white-text">fitness_center</i>
-      </span>
-      <h5 class="white-text">Power</h5>
-      <h3 class="count white-text" id="p1power">10%</h3>
-    </div>
-  </div>
-  </div>
-
-  <!-- Player 2 Game Card  -->
-  <div class="card purple accent-1 z-depth-5" id="floatRight">
-    <div class="card-content center" id="#rightContent">
-      <span id="player2Heart" class="pulse btn-large btn-floating red">
-        <i class="material-icons large white-text">favorite</i>
-      </span>
-      <h5 class="white-text">Health</h5>
-      <h3 id="p2health" class="count white-text">100%</h3>
-      <div class="progress white">
-        <div id="p2healthBar" class="determinate red" style="width: 100%">
-        </div>
-      </div>
-      <span class="btn-large btn-floating black">
-        <i class="material-icons large white-text">fitness_center</i>
-      </span>
-      <h5 class="white-text">Power</h5>
-      <h3 class="count white-text" id="p2power">10%</h3>
-    </div>
-  </div>
-  </div>
-  </div>
-
-  <!-- Game Map -->
-  <div class="container" id="gameContainer">
-    <div id="stage" class="card grey lighten-5 z-depth-4">
-    </div>
-  </div>
-
-  <!-- Game Instructions Modal -->
-  <div id="rules" class="modal bottom-sheet">
+  <!-- Fight Modal -->
+  <div id="fight" class="modal">
+    <div class="modal-overlay"></div>
     <div class="modal-content">
-      <p class="flow-text blue-grey-text center-align">
-        <strong>Game Rules</strong>
-      </p>
-      <p class="flow-text">
-        <span class="center-align">The
-          <em>initial
-            <strong>turn and placement</strong>
-          </em> of each players is
-          <em>randomly selected</em> on the map when the game loads.
-          <br> For each turn, each player can move from
-          <em>
-            <strong>one to three boxes </strong> (horizontally or vertically)</em> before ending their turn.</span>
-        <br>
-        <br>
-        <span class="grey lighten-3"> On the map,
-          <span class="red-text"> 4 Weapons </span>,
-          <span class="blue-text"> 2 Potions </span>, and
-          <span class="brown-text darken-4"> 15 Obstacles </span> will be
-          <em>randomly placed.</em>
-        </span>
-        <br>
-        <span class="red white-text"> • Weapons</span>
-        <img src="images/dagger.png" alt="Dagger">
-        <strong>(20% Damage)</strong>
-        <img src="images/hammer.png" alt="Hammer">
-        <strong>(22% Damage)</strong>
-        <img src="images/quiver.png" alt="Quiver">
-        <strong>(24% Damage)</strong>
-        <img src="images/sword.png" alt="Sword">
-        <strong>(26% Damage)</strong>
-        <br>
-        <span class="blue darken-3 white-text"> • Potions</span>
-        <img src="images/potion1.png" alt="Potion">
-        <strong>(+30% Health)</strong>
-        <img src="images/potion2.png" alt="Potion">
-        <strong>(+30% Health)</strong>
-        <br>
-        <span class="brown darken-3 white-text"> • Obstacles</span>
-        <img src="images/blocked.png" alt="Blocked Tile"> X 15
-        <br>
-        <br>
-        <em>Players
-          <strong>cannot pass</strong> through the
-          <strong>obstacles</strong> generated or
-          <strong>above/beyond</strong> the other player.</em>
-        <br> The
-        <em>weapons</em> on the map
-        <em>
-          <strong> can be collected</strong>
-        </em> by the player who
-        <strong>lands</strong> on it. The player will
-        <em>leave their current weapon</em> on site and
-        <em>replace it</em> with the new one.
-        <br>
-        <br> When the game starts, the
-        <em>initial damage</em> that each player can inflict is
-        <em>10% points of damage.</em>
-        <br> If players
-        <em>land over adjacent squares</em> (horizontally or vertically),
-        <em> a battle
-          <strong>begins.</strong>
-        </em>
-        <br>
-        <br>
-        <strong> During combat, the game works as follows:</strong>
-        <br> • Each player
-        <em class="red-text lighten-1">attacks</em> in turn.
-        <br> • The
-        <em class="red-text darken-4">damage depends</em> on the player's
-        <em class="red-text darken-4">weapon.</em>
-        <br> • The challenged player(s) can
-        <em class="amber-text darken-3">choose to attack or defend</em> against the next shot.
-        <br> • If the challenged player(s)
-        <em class="blue-text darken-3">chooses to defend themselves</em>, they will
-        <em class="blue-text darken-3">sustain 50% less damage</em> than normal, but will
-        <em class="red-text darken-4">lose their turn.</em>
-        <br>
-        <span class="red darken-3 white-text"> • As soon as the life points of a player (initially 100) falls to 0,
-          <strong>they lose.</strong>
-        </span>
-        <br>
-        <span class="green darken-3 white-text"> • If a player
-          <em>is below 50%</em> they may use one of the healing potions and
-          <strong>
-            <em>regain +30% life points.</em>
-          </strong>
-        </span>
-      </p>
+      <h2 class="modal-title">⚔️ Battle Initiated!</h2>
+      <p class="modal-text">Choose your action wisely! Defending reduces damage by 50% but you can't counter-attack.</p>
+      <div class="modal-actions">
+        <button id="defense" class="btn btn-warning">🛡️ Defend</button>
+        <button id="attack" class="btn btn-danger">⚔️ Attack</button>
+      </div>
     </div>
-    <div class="modal-footer">
-      <button class="modal-action modal-close waves-effect waves-yellow light-blue btn-large">Close</button>
+  </div>
+
+  <!-- End Game Modal -->
+  <div id="lostGame" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <h2 class="modal-title">Game Over!</h2>
+      <p class="modal-text" id="gameOverText"></p>
+      <div class="modal-actions">
+        <button id="rematchBtn" class="btn btn-primary">🔄 Rematch</button>
+        <button id="quitBtn" class="btn btn-secondary">❌ Quit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Container -->
+  <main class="game-container">
+    <!-- Player 1 Stats Card -->
+    <div class="player-card player1-card" id="floatLeft">
+      <div class="player-header">
+        <div class="player-avatar">👑</div>
+        <h3 class="player-name">Player 1</h3>
+      </div>
+      <div class="stat-group">
+        <div class="stat-icon">❤️</div>
+        <div class="stat-info">
+          <label>Health</label>
+          <div class="health-bar">
+            <div id="p1healthBar" class="health-fill" style="width: 100%;"></div>
+          </div>
+          <span id="p1health" class="stat-value">100</span>
+        </div>
+      </div>
+      <div class="stat-group">
+        <div class="stat-icon">⚔️</div>
+        <div class="stat-info">
+          <label>Power</label>
+          <span id="p1power" class="stat-value">10</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player 2 Stats Card -->
+    <div class="player-card player2-card" id="floatRight">
+      <div class="player-header">
+        <div class="player-avatar">🏰</div>
+        <h3 class="player-name">Player 2</h3>
+      </div>
+      <div class="stat-group">
+        <div class="stat-icon">❤️</div>
+        <div class="stat-info">
+          <label>Health</label>
+          <div class="health-bar">
+            <div id="p2healthBar" class="health-fill" style="width: 100%;"></div>
+          </div>
+          <span id="p2health" class="stat-value">100</span>
+        </div>
+      </div>
+      <div class="stat-group">
+        <div class="stat-icon">⚔️</div>
+        <div class="stat-info">
+          <label>Power</label>
+          <span id="p2power" class="stat-value">10</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Board -->
+    <div id="gameBoard">
+      <div id="stage"></div>
+    </div>
+  </main>
+
+  <!-- Rules Modal -->
+  <div id="rules" class="modal">
+    <div class="modal-overlay"></div>
+    <div class="modal-content rules-content">
+      <h2 class="modal-title">📜 Game Rules</h2>
+      <div class="rules-section">
+        <h3>🎮 Gameplay</h3>
+        <ul>
+          <li>Players start at <strong>random positions</strong> on the map</li>
+          <li>Each turn, move <strong>1-3 tiles</strong> horizontally or vertically</li>
+          <li>Players cannot pass through obstacles or other players</li>
+          <li>Battle begins when players are adjacent to each other</li>
+        </ul>
+
+        <h3>⚔️ Items on the Map</h3>
+        <div class="items-grid">
+          <div class="item-info">
+            <strong>🗡️ Weapons (4)</strong>
+            <ul>
+              <li>Dagger: 20 damage</li>
+              <li>Hammer: 22 damage</li>
+              <li>Quiver: 24 damage</li>
+              <li>Sword: 26 damage</li>
+            </ul>
+          </div>
+          <div class="item-info">
+            <strong>🧪 Potions (2)</strong>
+            <ul>
+              <li>Restores +30 health</li>
+              <li>Available when health is below 50%</li>
+            </ul>
+          </div>
+          <div class="item-info">
+            <strong>🚧 Obstacles (15)</strong>
+            <ul>
+              <li>Cannot be passed through</li>
+              <li>Block movement paths</li>
+            </ul>
+          </div>
+        </div>
+
+        <h3>⚔️ Combat</h3>
+        <ul>
+          <li>Initial damage: <strong>10 points</strong></li>
+          <li>Weapon damage replaces initial damage</li>
+          <li><strong>Attack:</strong> Deal full damage and receive counter-attack</li>
+          <li><strong>Defend:</strong> Take 50% less damage but lose your turn</li>
+          <li>Game ends when a player's health reaches 0</li>
+        </ul>
+      </div>
+      <button id="closeRulesBtn" class="btn btn-primary">Got it!</button>
     </div>
   </div>
 
 
-  <!-- Footer Content -->
-  <footer class="page-footer">
-    <div class="container">
-      <div class="row">
-        <div class="col l6 s12">
-          <h5 class="white-text">OpenClassrooms: Project 6</h5>
-          <p class="grey-text text-lighten-4">Build a turn-based board game in JavaScript.</p>
-        </div>
-        <div class="col l4 offset-l2 s12">
-          <h5 class="white-text">Daniel Rodriguez
-            <i class="material-icons">code</i>
-          </h5>
-        </div>
-      </div>
-    </div>
-    <div class="footer-copyright">
-      <div class="container">
-        <span>
-          © Created By Daniel Rodriguez 2018 </span>
-      </div>
-    </div>
+  <!-- Footer -->
+  <footer class="game-footer">
+    <p>⚔️ The Kingdom Games - A Turn-Based Strategy Game</p>
+    <p class="footer-small">Originally created by Daniel Rodriguez | Refactored 2025</p>
   </footer>
 
-
-
-  <!--  Scripts-->
-  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  <!-- Scripts -->
   <script src="js/modal.js"></script>
   <script src="js/end_game.js"></script>
   <script src="js/fight.js"></script>

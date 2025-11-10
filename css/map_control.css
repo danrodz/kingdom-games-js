@@ -1,82 +1,81 @@
-/* XXS Devices, Small Phones */
-@media only screen and (max-width: 359px) {
-  #stage {
-    position: relative;
-    width: 300px;
-    height: 300px;
-    margin: auto;
-    background-image: url('../images/tileBackground.png');
-    background-repeat: repeat;
-  }
+/* ========================================
+   Game Board & Cell Styles
+   ======================================== */
 
-  .cell {
-    display: block;
-    position: absolute;
-    width: 30px;
-    height: 30px;
-  }
+/* Default (smallest devices) */
+#stage {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  margin: auto;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-size: cover;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  border: 4px solid rgba(255, 255, 255, 0.3);
 }
 
-/* XS Devices, Phones */
+.cell {
+  display: block;
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  border-radius: 6px;
+  image-rendering: crisp-edges;
+}
+
+/* Small phones (360px and up) */
 @media only screen and (min-width: 360px) {
   #stage {
-    position: relative;
     width: 320px;
     height: 320px;
-    margin: auto;
-    background-image: url('../images/tileBackground.png');
-    background-repeat: repeat;
   }
 
   .cell {
-    display: block;
-    position: absolute;
     width: 32px;
     height: 32px;
   }
 }
 
-@media only screen and (min-width: 480px) {
-}
-
-/* Small Devices, Tablets */
+/* Tablets and small devices (768px and up) */
 @media only screen and (min-width: 768px) {
   #stage {
-    position: relative;
     width: 480px;
     height: 480px;
-    margin: auto;
-    background-image: url('../images/tileBackground.png');
-    background-repeat: repeat;
   }
 
   .cell {
-    display: block;
-    position: absolute;
     width: 48px;
     height: 48px;
+    border-radius: 8px;
   }
 }
 
-/* Medium Devices, Desktops */
+/* Desktops (992px and up) */
 @media only screen and (min-width: 992px) {
   #stage {
-    position: relative;
     width: 640px;
     height: 640px;
-    margin: auto;
-    background-image: url('../images/tileBackground.png');
-    background-repeat: repeat;
   }
 
   .cell {
-    display: block;
-    position: absolute;
+    width: 64px;
+    height: 64px;
+    border-radius: 8px;
+  }
+}
+
+/* Large desktops (1200px and up) */
+@media only screen and (min-width: 1200px) {
+  #stage {
+    width: 640px;
+    height: 640px;
+  }
+
+  .cell {
     width: 64px;
     height: 64px;
   }
-}
-
-/* Large Devices, Wide Screens */
-@media only screen and (min-width: 1200px) {
 }
