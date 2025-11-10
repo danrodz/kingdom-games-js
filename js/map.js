@@ -270,10 +270,10 @@ function updateTurnIndicator() {
 
   if (turnText && turnIndicator) {
     if (turn.control) {
-      turnText.textContent = "👑 Player 1's Turn";
+      turnText.textContent = "Player 1's Turn";
       turnIndicator.style.background = 'linear-gradient(90deg, #4fc3f7, #0288d1)';
     } else {
-      turnText.textContent = "🏰 Player 2's Turn";
+      turnText.textContent = "Player 2's Turn";
       turnIndicator.style.background = 'linear-gradient(90deg, #ba68c8, #8e24aa)';
     }
   }
